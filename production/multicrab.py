@@ -20,18 +20,16 @@ inputFiles = []
 
 def SendCrabJob(runno):
     from CRABAPI.RawCommand       import crabCommand
-    from multiprocessing          import Process
     from CRABClient.UserUtilities import config
     print "\n> Sending CRAB job for run number:", runno
     config = config()
 
-    def submit(config):
-        res = crabCommand('submit', config = config)
-
+    config.section_('General')
     config.General.workArea        = 'crab_jobs'
     config.General.requestName     = 'DTDPGNtuples_SliceTest_run' + str(runno)
     config.General.transferOutputs = True
 
+    config.section_('JobType')
     config.JobType.pluginName  = 'Analysis'
     config.JobType.psetName    = 'dtDpgNtuples_slicetest_cfg.py'
 
@@ -39,21 +37,20 @@ def SendCrabJob(runno):
     config.JobType.inputFiles  = inputFiles
     config.JobType.maxMemoryMB = 4000
 
+    config.section_('Data')
     config.Data.inputDataset   = inputDataset
-    config.Data.splitting      = 'Automatic'
-    #config.Data.splitting      = 'LumiBased'
-    #config.Data.unitsPerJob    = 10
+    #config.Data.splitting      = 'Automatic'
+    config.Data.splitting      = 'LumiBased'
+    config.Data.unitsPerJob    = 10
     config.Data.runRange       = str(runno)
     config.Data.inputDBS       = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
     config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2019_data/crab/'
 
+    config.section_('Site')
     config.Site.storageSite = 'T2_CH_CERN'
-    config.Site.blacklist   = ['T2_BR_SPRACE', 'T2_US_Wisconsin', 'T1_RU_JINR', 'T2_RU_JINR', 'T2_EE_Estonia']
+    #config.Site.blacklist   = ['T2_BR_SPRACE', 'T2_US_Wisconsin', 'T1_RU_JINR', 'T2_RU_JINR', 'T2_EE_Estonia']
 
-    #p = Process(target=submit, args=(config,))
-    #p.start()
-    #p.join()
-    submit(config)
+    res = crabCommand('submit', config = config)
     return
 
 
