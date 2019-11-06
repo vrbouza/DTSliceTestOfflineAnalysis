@@ -1,0 +1,6 @@
+production/DTDPGNtuple_run*
+production/exec/*
+production/submit/*
+production/crab_jobs/*
+production/logs/*
+*.pyc
