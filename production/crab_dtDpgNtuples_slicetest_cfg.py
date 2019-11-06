@@ -3,12 +3,13 @@ config = Configuration()
 
 ##### Configuration parameters ################################
 
-runNumber = 330160
-inputDataset = "/Cosmics/Commissioning2019-v1/RAW"
+runNumber = 332948
+#inputDataset = "/Cosmics/Commissioning2019-v1/RAW"
+inputDataset = "/MiniDaq/Commissioning2019-v1/RAW"
 
 # These are the cfg parameters used to configure the 
 # dtDpgNtuples_slicetest_cfg.py configuration file
-configParams = ['ntupleName=DTDPGNtuple.root'] 
+configParams = ["ntupleName=DTDPGNtuple.root","nEvents=5000"]
 # E.g. use dedicated tTrigs
 # configParams = ['ntupleName=DTDPGNtuple.root', \
 #                 'tTrigFile=calib/TTrigDB_cosmics_ttrig.db'] 
@@ -37,7 +38,7 @@ config.section_('Data')
 config.Data.inputDataset = inputDataset
 
 config.Data.splitting    = 'LumiBased'
-config.Data.unitsPerJob  = 10  
+config.Data.unitsPerJob  = 1
 config.Data.runRange     = str(runNumber)
 config.Data.inputDBS     = 'https://cmsweb.cern.ch/dbs/prod/global/DBSReader/'
 config.Data.outLFNDirBase  = '/store/group/dpg_dt/comm_dt/commissioning_2019_data/crab/'
