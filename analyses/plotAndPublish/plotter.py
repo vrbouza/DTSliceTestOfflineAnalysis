@@ -289,3 +289,5 @@ for keyPlot in config:
 
     if args.verbosity==1:
         print('')
+    canvas.Close()
+    del canvas
