@@ -3,4 +3,5 @@ production/exec/*
 production/submit/*
 production/crab_jobs/*
 production/logs/*
+analyses/run*
 *.pyc
