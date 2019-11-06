@@ -1,3 +1,4 @@
+export ANALYSIS_FOLDER=`pwd`
 CMSSW_FOLDER=/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DT/OfflineCode/SliceTest/v7/CMSSW_10_6_0/
 CRAB_CONFIG_SCRIPT=/cvmfs/cms.cern.ch/crab3/crab.sh
  
