@@ -33,6 +33,8 @@ def AnalyseSegmentThings(runno):
     inputFile = "../production/DTDPGNtuple_run{rn}.root".format(rn = runno)
 
     segmentAnalysis = r.DTNtupleSegmentAnalyzer(inputFile, "./run" + str(runno) + "/segment/results_segment.root");
+    segmentAnalysis.PreLoop("Ph1");
+    segmentAnalysis.PreLoop("Ph2");
     segmentAnalysis.Loop();
     return
 
