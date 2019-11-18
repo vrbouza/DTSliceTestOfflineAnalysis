@@ -1,15 +1,23 @@
 import os, sys
+from multiprocessing import Pool
 
-def mkdir (directory) :
+isTP = True
+ConfigPath = 'condor/CondorConfig_TP.sh' if isTP else 'condor/CondorConfig_Cosmics.sh'
+
+
+def mkdir(directory) :
     if not os.path.exists(directory):
         os.makedirs(directory)
 
+
 def LaunchCondorJob(runno):
-    print "\nSubmitting job for run number", runno, "to lxplus\' HTCondor cluster."
-    template = open('condor/configForSliceTestAnalysis.sh').read()
-    exect = template.format(directory=os.getcwd(),runno=runno)
+    print "# Submitting job for run number", runno, "to lxplus\' HTCondor cluster."
+
+    template = open(ConfigPath).read()
+    exect    = template.format(directory = os.getcwd(), runno = runno)
     mkdir('exec')
-    f = open('exec/exec_%s.sh'%runno ,'w')
+
+    f = open('exec/exec_%s.sh'%runno,'w')
     f.write(exect)
     f.close()
 
@@ -29,6 +37,24 @@ def LaunchCondorJob(runno):
     return
 
 
-for rn in sys.argv:
-    if rn == sys.argv[0]: continue
-    else:                 LaunchCondorJob(int(rn))
+if __name__ == '__main__':
+    ncores = int(sys.argv[1])
+    tsks = []
+    if ncores <= 99999:
+        print "\n> Parallelisation of run analysing with", ncores, "cores."
+
+        for rn in [int(sys.argv[rl]) for rl in range(2, len(sys.argv))]:
+            tsks.append( int(rn) )
+
+        print "> Beginning submission..."
+        pool = Pool(ncores)
+        pool.map(LaunchCondorJob, tsks)
+        pool.close()
+        pool.join()
+        del pool
+    else:
+        for rn in [int(sys.argv[rl]) for rl in range(1, len(sys.argv))]:
+            tsks.append( int(rn) )
+
+        print "\n> Beginning submission..."
+        for tsk in tsks: LaunchCondorJob(tsk)
