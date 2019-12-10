@@ -10,6 +10,3 @@ cd -
 
 echo "[$0]: Configuring CRAB using $CRAB_CONFIG_SCRIPT"
 . $CRAB_CONFIG_SCRIPT
-
-echo "[$0]: Initializing proxy"
-voms-proxy-init -voms cms -valid 192:0
